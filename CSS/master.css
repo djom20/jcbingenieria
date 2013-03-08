@@ -1,0 +1,48 @@
+@charset "utf-8";
+/* CSS Document */
+
+#wraper {
+  margin: 0 auto;
+  overflow: hidden;
+  width: 800px;
+  min-height: 300px;
+}
+.center {
+  margin: 0 auto;
+}
+.addctby {
+  width: 150px;
+  height: auto;
+  padding: 10px;
+}
+.addUser {
+  width: 150px;
+  height: auto;
+  padding: 10px;
+}
+.addContri {
+  width: 150px;
+  height: auto;
+  padding: 10px;
+}
+#ajaxLoader {
+  margin-top: 10px;
+  width: 94%;
+  height: auto;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  font-size: 0.8em;
+  padding: 4px;
+  outline: none;
+  background: white;
+  text-align: center;
+}
+#ajaxLoader img {
+  vertical-align: middle;
+}
+#listadoUsers .centerTXT #listadoContri {
+  text-align: center;
+}
+.error {
+  font-size: 0.8em;
+}
