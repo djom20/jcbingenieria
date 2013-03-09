@@ -3,42 +3,6 @@ session_start();
 
 // Omitir errores
 ini_set("display_errors", false);
-
-// Incluimos nustro script php de funciones y conexión a la base de datos
-include('Includes/mainConexion.php');
-
-//Incluir Categorías en el select
-$consultacategoria="";
-$resultcateg=mysql_query($consultacategoria);
-$errorDbConexion == false;
-
-
-if($errorDbConexion == false){
-	//if($row=mysql_fetch_assoc($result)){
-		// Manda a llamar la función para mostrar la lista de Contribuyentes ya paginados
-		$consultaCartera = '<tr>
-										<td style="text-align: center;">21548754</td>
-										<td style="text-align: center;">2013-1</td>
-										<td style="text-align: center;">09/03/2013</td>
-										<td style="text-align: center;">1140820188</td>
-										<td style="text-align: center;">Jonathan Olier Miranda</td>
-										<td style="text-align: center;">$4.000.000</td>
-										<td style="text-align: center;">$500.000</td>
-										<td style="text-align: center;">$500.000</td>
-										<td style="text-align: center;"><input placeholder="Abono" type="text" name="abono" id="abono" /></td>
-										<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');"><i class="icon-trash icon-white"></i></a></td>
-									<tr>';
-	//}
-}
-else
-{
-	// Regresa error en la base de datos
-	$consultaCartera = '
-		<tr id="sinDatos">
-			<td colspan="9" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-	   	</tr>
-	';
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,11 +17,6 @@ else
 
 	<!--javascript-->
 	<script type="text/javascript" src="JS/jquery/jquery-1.8.3.min.js"></script>
-	<script type="text/javascript">
-		function Confirmar($user){
-			alert('¿Realmente desea eliminar este registro?');
-		}
-	</script>
 	<script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
 
 	<script type="text/javascript" src="js/jquery-validation-1.10.0/dist/jquery.validate.min.js"></script>
@@ -66,15 +25,11 @@ else
 
 	<!--Manejador del menu información *Star* -->
    	<script type="text/javascript">
-		$(document).ready(function(){
-			$(".header h2").click(function(){
-				$(this).parent().find(".Conextra").animate({ opacity:'toggle' , height: 'toggle' },500);
-			});
-			$("#submit").click(function(e){
-				e.preventDefault();
-				$("#cartera").submit();
-			});
+	$(document).ready(function(){
+		$(".header h2").click(function(){
+			$(this).parent().find(".Conextra").animate({ opacity:'toggle' , height: 'toggle' },500);
 		});
+	});
 	</script>
 	<!-- Manejador del menu información *End* -->
 
@@ -123,7 +78,7 @@ else
 
 				<div class="header">
 
-					<h2>Facturaci&oacute;n</h2>
+					<h2>Cartera</h2>
 
 					<div class="Conextra">
                     	<p>Generar, Anular o Reemplazar. <br />
@@ -147,7 +102,7 @@ else
 							if(!isset($_REQUEST['request'])){
 								echo '<img src="Imagenes/Guia.jpg" width="954" height="656" alt="Guia" />';
 							}else{
-								if($_REQUEST['request']=='cartera'){
+								if($_REQUEST['request']=='contribuyentes'){
 									echo '<div id="listaCartera">';
 									echo '	<table id="listaCarteraM" class="table table-striped table-bordered table-hover table-condensed">';
 									echo '		<thead>';
@@ -166,7 +121,25 @@ else
 									echo '		</thead>';
 
 									echo '		<tbody id="listaCategoriasOK">';
-									echo $consultaCartera;
+									//echo $consultaCartera;
+									echo '		</tbody>';
+
+									echo '	</table>';
+									echo '</div>';
+								}elseif($_REQUEST['request']=='users'){
+									echo '<div id="listaCartera">';
+									echo '	<table id="listaCarteraM" class="table table-striped table-bordered table-hover table-condensed">';
+									echo '		<thead>';
+									echo '			<tr>';
+									echo '				<th style="text-align:center;">Periodo</th>';
+									echo '				<th style="text-align:center;">Valor</th>';
+									echo '				<th style="text-align:center;">Abonado</th>';
+									echo '				<th style="text-align:center;">Saldo</th>';
+									echo '			</tr>';
+									echo '		</thead>';
+
+									echo '		<tbody id="listaCategoriasOK">';
+									//echo $consultaCartera;
 									echo '		</tbody>';
 
 									echo '	</table>';
@@ -174,15 +147,6 @@ else
 								}
 							}
 						?>
-
-						<form id="cartera" action="Cartera.php" method="POST">
-							<a href="./Facturas.php?request=factura" class="btn btn-inverse">Generar Facturas</a>
-							<a href="./Facturas.php?request=pdf" class="btn btn-inverse">Descargar PDF</a>
-							<a id="submit" class="btn btn-inverse">Cartera</a>
-
-							<input type="hidden" name="request" value="contribuyentes">
-							<input type="hidden" name="user" value="">
-						</form>
 						<div class="clr"></div>
 						<div class="clr"></div>
 

@@ -1,16 +1,9 @@
 <?php
 
-// Constantes conexión con la base de datos
-define("server", 'localhost');
-//define("user", 'Admin');
-define("user", 'root');
-//define("pass", '123456');
-define("pass", '');
-define("mainDataBase", 'Alumbrado_publico');
+include('php_lib/config.ini.php');
 
-mysql_connect("localhost","root","");
-//mysql_connect("localhost","Admin","123456");
-mysql_select_db("Alumbrado_publico");
+mysql_connect(SERVIDOR_MYSQL,USUARIO_MYSQL,PASSWORD_MYSQL);
+mysql_select_db(BASE_DATOS);
 
 // Variable que indica el status de la conexión a la base de datos
 $errorDbConexion = false;
@@ -91,18 +84,4 @@ function consultaContri_limit($linkDB, $primer_registro, $limit){
 	return $salida;
 }
 
-// Verificar constantes para conexión al servidor
-if(defined('server') && defined('user') && defined('pass') && defined('mainDataBase'))
-{
-	// Conexión con la base de datos
-
-	$mysqli = new mysqli(server, user, pass, mainDataBase);
-
-	// Verificamos si hay error al conectar
-	if (mysqli_connect_error()) {
-	    $errorDbConexion = true;
-	}
-
-	// Evitando problemas con acentos
-	$mysqli -> query('SET NAMES "utf8"');
-}
+include('mainConexion.php');

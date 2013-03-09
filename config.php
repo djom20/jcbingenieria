@@ -1,12 +1,15 @@
 <?php
+include('php_lib/config.ini.php');
+session_start();
 
 class Buscador {
 
+
 	//Se prueba nuevo metodo de conexión. Se declaran las varibles
-	var $host='localhost',
-		$user='Admin',
-		$pass='123456',
-		$db='Alumbrado_publico',
+	var $host=SERVIDOR_MYSQL,
+		$user=USUARIO_MYSQL,
+		$pass=PASSWORD_MYSQL,
+		$db=BASE_DATOS,
 		$correct_server='Se Conecto Con el servidor Correctamente',
 		$fail_server='No se pudo conectar con el servidor',
 		$correct_db='Se selecciono correctamente la db',
@@ -38,9 +41,13 @@ class Buscador {
 									<th>Nombre Contribuyente</th>
 									<th>Categor&iacute;a</th>
 									<th>Direcci&oacute;n</th>
-									<th>Ciudad</th>
-									<th colspan="2" style="text-align:center;">Acciones</th>
-								</tr>
+									<th>Ciudad</th>';
+									if(isset($_SESSION["usr_tipo"])){
+										if($_SESSION["usr_tipo"]=="Administrador"){
+											print '<th colspan="2" style="text-align:center;">Acciones</th>';
+										}
+									}
+				print '</tr>
 							</thead>';
 				while ($row = mysql_fetch_assoc($query)) {
 					print '<tbody>
@@ -49,10 +56,23 @@ class Buscador {
 									<td>'.$row['nomb_contribuyente'].'</td>
 									<td>'.$row['categ_contribuyente'].'</td>
 									<td>'.$row['dir_contribuyente'].'</td>
-									<td>'.$row['ciud_contribuyente'].'</td>
-									<td style="text-align:center;"><a class="btn btn-mini" href="'.$row['id_user'].'">Editar</a></td>
-									<td style="text-align:center;"><a class="btn btn-danger btn-mini">Eliminar</a></td>
-								<tr>
+									<td>'.$row['ciud_contribuyente'].'</td>';
+
+									if(isset($_SESSION["usr_tipo"])){
+										if($_SESSION["usr_tipo"]=="Administrador"){
+											print '<td style="text-align:center;">';
+											print '<form id="formcartera" action="Cartera.php" method="POST">';
+											print '<a id="submitcartera" class="btn btn-mini">Cartera</a>';
+											print '<input type="hidden" name="request" value="users">';
+											print '<input type="hidden" name="user" value="'.$row['id_user'].'">';
+											print '</form>';
+											print '</td>';
+
+											print '<td style="text-align:center;"><a class="btn btn-mini" href="'.$row['id_user'].'">Editar</a></td>';
+											print '<td style="text-align:center;"><a class="btn btn-danger btn-mini">Eliminar</a></td>';
+										}
+									}
+					print '		<tr>
 							</tbody>';
 				}
 				print '</table>';

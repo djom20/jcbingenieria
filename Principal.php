@@ -58,10 +58,10 @@ require_once ('session.php');
 								}
 							}
 						?>
-						<li><a href="Facturas.php"><span>Factuaci&oacute;n </span></a></li>
-						<li><a href="Consultas.php"><span> Consultas </span></a></li>
-						<li><a href="Panel.php"><span>Panel</span></a></li>
-						<li><a href="Logout.php"><span>Salir </span></a></li>
+						<li><a href="Facturas.php"><span>Factuaci&oacute;n</span></a></li>
+						<li><a href="Consultas.php"><span>Consultas</span></a></li>
+						<li><a href="Panel.php" class="active"><span>Panel</span></a></li>
+						<li><a href="Logout.php"><span>Salir</span></a></li>
 					</ul>
 				</div>
 				<!-- Menú *End* -->

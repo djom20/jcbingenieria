@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -15,11 +16,16 @@
 
 	<!--Manejador del menu información *Star* -->
    	<script type="text/javascript">
-	$(document).ready(function(){
-		$(".header h2").click(function(){
-			$(this).parent().find(".Conextra").animate({ opacity:'toggle' , height: 'toggle' },500);
+		$(document).ready(function(){
+			$(".header h2").click(function(){
+				$(this).parent().find(".Conextra").animate({ opacity:'toggle' , height: 'toggle' },500);
+			});
+			$("#submitcartera").click(function(e){
+				e.preventDefault();
+				alert('message');
+				$("#formcartera").submit();
+			});
 		});
-	});
 	</script>
 	<!-- Manejador del menu información *End* -->
 
@@ -44,15 +50,15 @@
 					<ul>
 						<?php
 							if(isset($_SESSION["usr_tipo"])){
-								if($_SESSION["usr_tipo"]=="Administrador"){
+								if($_SESSION["usr_tipo"] == "Administrador"){
 									echo '<li><a href="Pcontribuyentes.php"><span>Registro</span></a></li>';
 								}
 							}
 						?>
-						<li><a href="Facturas.php"><span>Factuaci&oacute;n </span></a></li>
-						<li><a href="Consultas.php" class="active"><span> Consultas </span></a></li>
+						<li><a href="Facturas.php"><span>Factuaci&oacute;n</span></a></li>
+						<li><a href="Consultas.php" class="active"><span>Consultas</span></a></li>
 						<li><a href="Panel.php"><span>Panel</span></a></li>
-						<li><a href="#"><span>Salir </span></a></li>
+						<li><a href="Logout.php"><span>Salir</span></a></li>
 					</ul>
 				</div>
 				<!-- Menú *End* -->
@@ -76,7 +82,7 @@
 					</div>
 
 				</div>
-              
+
 				<div class="clr"></div>
 
 			</div>
@@ -101,10 +107,9 @@
 							<div id="resultados" class="resultados">
 
 							</div>
-
 						</div>
 						<!--Contenedor para consultas-->
-						
+
 						<div class="clr"></div>
 						<div class="clr"></div>
 

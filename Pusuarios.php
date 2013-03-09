@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Omitir errores
 ini_set("display_errors", false);
 
@@ -82,7 +84,7 @@ else
 				<select id="usr_tipo" name="usr_tipo" class="{required:true} span3">
 					<option value="">Seleccione Una Opción</option>
 					<option value="Administrador">Administrador</option>
-					<option value="Usuario">Usuario</option>	        	
+					<option value="Usuario">Usuario</option>
 				</select>
 
 				<p>Estado</p>
@@ -90,7 +92,7 @@ else
 				<select id="usr_estado" name="usr_estado" class="{required:true} span3">
 					<option value="">Seleccione Una Opción</option>
 					<option value="Activo">Activo</option>
-					<option value="Suspendido">Suspendido</option>	        	
+					<option value="Suspendido">Suspendido</option>
 				</select>
 
 
@@ -133,9 +135,9 @@ else
 						?>
 						<li><a href="Facturas.php"><span>Factuaci&oacute;n </span></a></li>
 						<li><a href="Consultas.php"><span> Consultas </span></a></li>
-						<li><a href="#"><span> Infomres</span></a></li>
+						<li><a href="#"><span> Informes</span></a></li>
 						<li><a href="Panel.php" class="active"><span>Panel</span></a></li>
-						<li><a href="#"><span>Salir </span></a></li>
+						<li><a href="Logout.php"><span>Salir </span></a></li>
 					</ul>
 				</div>
 				<!-- Menú *End* -->
@@ -190,7 +192,13 @@ else
 												<th style="text-align:center;">Contrase&ntilde;a</th>
 												<th style="text-align:center;">Tipo de usuario</th>
 												<th style="text-align:center;">Estado</th>
-												<th colspan="2" style="text-align:center;">Acciones</th>
+												<?php
+													if(isset($_SESSION["usr_tipo"])){
+														if($_SESSION["usr_tipo"]=="Administrador"){
+															echo '<th colspan="2" style="text-align:center;">Acciones</th>';
+														}
+													}
+												?>
 											</tr>
 										</thead>
 
