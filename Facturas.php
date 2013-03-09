@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once ('session.php');
 
 // Omitir errores
 ini_set("display_errors", false);
