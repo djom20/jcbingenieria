@@ -186,6 +186,10 @@ html {
   text-decoration: none;
   font: bold 12px Arial, Helvetica, sans-serif;
 }
+.body button {
+  text-decoration: none;
+  font: bold 12px Arial, Helvetica, sans-serif;
+}
 .body img {
   margin: 5px auto;
   padding: 0;

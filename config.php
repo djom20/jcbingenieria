@@ -4,7 +4,6 @@ session_start();
 
 class Buscador {
 
-
 	//Se prueba nuevo metodo de conexión. Se declaran las varibles
 	var $host=SERVIDOR_MYSQL,
 		$user=USUARIO_MYSQL,
@@ -43,7 +42,7 @@ class Buscador {
 									<th>Direcci&oacute;n</th>
 									<th>Ciudad</th>';
 									if(isset($_SESSION["usr_tipo"])){
-										if($_SESSION["usr_tipo"]=="Administrador"){
+										if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 											print '<th colspan="2" style="text-align:center;">Acciones</th>';
 										}
 									}
@@ -59,7 +58,7 @@ class Buscador {
 									<td>'.$row['ciud_contribuyente'].'</td>';
 
 									if(isset($_SESSION["usr_tipo"])){
-										if($_SESSION["usr_tipo"]=="Administrador"){
+										if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 											print '<td style="text-align:center;">';
 											print '<form id="formcartera" action="Cartera.php" method="POST">';
 											print '<a id="submitcartera" class="btn btn-mini">Cartera</a>';

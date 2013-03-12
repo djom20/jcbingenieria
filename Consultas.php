@@ -50,7 +50,7 @@
 					<ul>
 						<?php
 							if(isset($_SESSION["usr_tipo"])){
-								if($_SESSION["usr_tipo"] == "Administrador"){
+								if($_SESSION["usr_tipo"] == "Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 									echo '<li><a href="Pcontribuyentes.php"><span>Registro</span></a></li>';
 								}
 							}

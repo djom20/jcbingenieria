@@ -53,7 +53,7 @@ require_once ('session.php');
 					<ul>
 						<?php
 							if(isset($_SESSION["usr_tipo"])){
-								if($_SESSION["usr_tipo"]=="Administrador"){
+								if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 									echo '<li><a href="Pcontribuyentes.php"><span>Registro</span></a></li>';
 								}
 							}
@@ -68,7 +68,7 @@ require_once ('session.php');
 
 				<div class="clr"></div>
 				<div class="clr"></div>
-        
+
 			</div>
 
 		</div>
@@ -93,7 +93,7 @@ require_once ('session.php');
 					</div>
 
 				</div>
-			
+
 				<div class="controls-center">
 
 					<div id="slider_controls">
@@ -115,7 +115,7 @@ require_once ('session.php');
 				<!-- Final del Slider -->
 
 			</div>
-            
+
 		</div>
 
 		<div class="clr"></div>

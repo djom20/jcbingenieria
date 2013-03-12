@@ -7,37 +7,50 @@ ini_set("display_errors", false);
 // Incluimos nustro script php de funciones y conexión a la base de datos
 include('Includes/mainConexion.php');
 
-//Incluir Categorías en el select
-$consultacategoria="";
-$resultcateg=mysql_query($consultacategoria);
-$errorDbConexion == false;
+if(isset($_REQUEST['request'])){
+	if($_REQUEST['request']=='cartera'){
+		$consultaCartera="SELECT `id_contribuyente`,`nomb_contribuyente`,`categ_contribuyente`,`dir_contribuyente`,`ciud_contribuyente` FROM `tbl_contribuyente` WHERE `id_user` > 0";
+		$result=mysql_query($consultaCartera);
+		$errorDbConexion == false;
 
+		if($errorDbConexion == false){
+			//if($row=mysql_fetch_assoc($result)){
+				// Manda a llamar la función para mostrar la lista de Contribuyentes ya paginados
+				$consultaCartera = '<tr>
+												<td style="text-align: center;">21548754</td>
+												<td style="text-align: center;">2013-1</td>
+												<td style="text-align: center;">09/03/2013</td>
+												<td style="text-align: center;">1140820188</td>
+												<td style="text-align: center;">Jonathan Olier Miranda</td>
+												<td style="text-align: center;">$4.000.000</td>
+												<td style="text-align: center;">$500.000</td>
+												<td style="text-align: center;">$500.000</td>
+												<td style="text-align: center;"><input placeholder="Abono" type="text" name="abono" id="abono" /></td>
+												<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');"><i class="icon-trash icon-white"></i></a></td>
+											<tr>';
+			//}
+		}else{
+			// Regresa error en la base de datos
+			$consultaCartera = '
+				<tr id="sinDatos">
+					<td colspan="9" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
+			   	</tr>
+			';
+		}
+	}elseif($_REQUEST['request']=='reporte'){
+		include('Includes/mainFunctions.incContri.php');
 
-if($errorDbConexion == false){
-	//if($row=mysql_fetch_assoc($result)){
-		// Manda a llamar la función para mostrar la lista de Contribuyentes ya paginados
-		$consultaCartera = '<tr>
-										<td style="text-align: center;">21548754</td>
-										<td style="text-align: center;">2013-1</td>
-										<td style="text-align: center;">09/03/2013</td>
-										<td style="text-align: center;">1140820188</td>
-										<td style="text-align: center;">Jonathan Olier Miranda</td>
-										<td style="text-align: center;">$4.000.000</td>
-										<td style="text-align: center;">$500.000</td>
-										<td style="text-align: center;">$500.000</td>
-										<td style="text-align: center;"><input placeholder="Abono" type="text" name="abono" id="abono" /></td>
-										<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');"><i class="icon-trash icon-white"></i></a></td>
-									<tr>';
-	//}
-}
-else
-{
-	// Regresa error en la base de datos
-	$consultaCartera = '
-		<tr id="sinDatos">
-			<td colspan="9" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-	   	</tr>
-	';
+		if($errorDbConexion == false){
+			$consultaFactura = reporteContri($mysqli);
+		}else{
+			// Regresa error en la base de datos
+			$consultaFactura = '
+				<tr id="sinDatos">
+					<td colspan="6" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
+			   	</tr>
+			';
+		}
+	}
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -74,6 +87,10 @@ else
 				e.preventDefault();
 				$("#cartera").submit();
 			});
+			$("#submit2").click(function(e){
+				e.preventDefault();
+				$("#reportes").submit();
+			});
 		});
 	</script>
 	<!-- Manejador del menu información *End* -->
@@ -99,7 +116,7 @@ else
 					<ul>
 						<?php
 							if(isset($_SESSION["usr_tipo"])){
-								if($_SESSION["usr_tipo"]=="Administrador"){
+								if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 									echo '<li><a href="Pcontribuyentes.php"><span>Registro</span></a></li>';
 								}
 							}
@@ -164,20 +181,29 @@ else
 									echo '				<th style="text-align:center;"></th>';
 									echo '			</tr>';
 									echo '		</thead>';
-
 									echo '		<tbody id="listaCategoriasOK">';
 									echo $consultaCartera;
 									echo '		</tbody>';
-
 									echo '	</table>';
 									echo '</div>';
+								}elseif($_REQUEST['request']=='reporte'){
+									include('pdf/convertToPdf.php');
+									$var = doPDF($consultaFactura);
+
+									echo 'Para <strong>ver</strong> el reporte por favor haga click <a target="_blank" href="pdf/reportes/'.$var.'">aqui</a>.<br><br>';
+									echo 'Para <strong>descargar</strong> el reporte por favor haga click <a blank="_" href="pdf/download.php?f='.$var.'">aqui</a>.<br><br>';
+									echo '<script type="text/javascript">alert("El reporte se genero con exito.");</script>';
+
 								}
 							}
 						?>
 
+						<form id="reportes" action="facturas.php" method="POST" class="span2">
+							<a id="submit2" class="btn btn-inverse">Generar Reporte</a>
+							<input  type="hidden" name="request" value="reporte">
+						</form>
+
 						<form id="cartera" action="Cartera.php" method="POST">
-							<a href="./Facturas.php?request=factura" class="btn btn-inverse">Generar Facturas</a>
-							<a href="./Facturas.php?request=pdf" class="btn btn-inverse">Descargar PDF</a>
 							<a id="submit" class="btn btn-inverse">Cartera</a>
 
 							<input type="hidden" name="request" value="contribuyentes">

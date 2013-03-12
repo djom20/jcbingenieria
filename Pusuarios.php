@@ -128,7 +128,7 @@ else
 					<ul>
 						<?php
 							if(isset($_SESSION["usr_tipo"])){
-								if($_SESSION["usr_tipo"]=="Administrador"){
+								if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 									echo '<li><a href="Pcontribuyentes.php"><span>Registro</span></a></li>';
 								}
 							}
@@ -194,7 +194,7 @@ else
 												<th style="text-align:center;">Estado</th>
 												<?php
 													if(isset($_SESSION["usr_tipo"])){
-														if($_SESSION["usr_tipo"]=="Administrador"){
+														if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
 															echo '<th colspan="2" style="text-align:center;">Acciones</th>';
 														}
 													}

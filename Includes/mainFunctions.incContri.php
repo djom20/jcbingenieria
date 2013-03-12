@@ -30,9 +30,69 @@ function consultaContri($linkDB){
 					<td>'.$listadoOK['ciud_contribuyente'].'</td>
 					<td style="text-align:center;"><a class="btn btn-mini" href="'.$listadoOK['id_user'].'">Editar</a></td>
 					<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');">Eliminar</a></td>
-				<tr>
+				</tr>
 			';
 		}
+
+	}
+	else{
+		$salida = '
+			<tr id="sinDatos">
+				<td colspan="6" style="text-align: center;">NO HAY REGISTROS EN LA BASE DE DATOS</td>
+	   		</tr>
+		';
+	}
+
+	return $salida;
+}
+
+
+function reporteContri($linkDB){
+
+	$salida = '';
+
+	$consulta = $linkDB -> query("SELECT id_user,id_contribuyente,nomb_contribuyente,categ_contribuyente,dir_contribuyente,ciud_contribuyente
+								  FROM tbl_contribuyente ORDER BY nomb_contribuyente ASC");
+
+	if($consulta -> num_rows != 0){
+		//$file='../CSS/bootstrap/css/bootstrap.min.css';
+		//$css = fopen($file, 'r') or die("No se pudo abrir el archivo");
+		//$css2== file_get_contents ($css2);
+		//if($salida!=''){ echo '<script type="text/javascript">alert("El css se genero con exito.");</script>'; }
+		//fclose($file);
+
+		$salida .= '<!doctype html>
+			        <html>
+			        <head>
+			            <link rel="stylesheet" href="../CSS/bootstrap/css/bootstrap.css" type="text/css" />
+			        </head>
+			        <body>
+			        <table class="table table-striped table-bordered table-hover table-condensed">
+						<tr>
+							<th>Id Contribuyente</th>
+							<th>Nombre</th>
+							<th>Categoria</th>
+							<th>Direccion</th>
+							<th>Ciudad</th>
+						</tr>';
+
+		//Convertimos la información obtenida de la consulta
+		while($listadoOK = $consulta -> fetch_assoc())
+		{
+			$salida .= '
+				<tr>
+					<td style="text-align:center;">'.$listadoOK['id_contribuyente'].'</td>
+					<td style="text-align:center;">'.$listadoOK['nomb_contribuyente'].'</td>
+					<td style="text-align:center;">'.$listadoOK['categ_contribuyente'].'</td>
+					<td style="text-align:center;">'.$listadoOK['dir_contribuyente'].'</td>
+					<td style="text-align:center;">'.$listadoOK['ciud_contribuyente'].'</td>
+				</tr>
+			';
+		}
+
+		$salida .= '</table>
+					</body>
+        			</html>';
 
 	}
 	else{
@@ -68,7 +128,7 @@ function consultaContri_limit($linkDB, $primer_registro, $limit){
 					<td>'.$listadoOK['ciud_contribuyente'].'</td>
 					<td style="text-align:center;"><a class="btn btn-mini" href="'.$listadoOK['id_user'].'">Editar</a></td>
 					<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');">Eliminar</a></td>
-				<tr>
+				</tr>
 			';
 		}
 
