@@ -173,7 +173,7 @@ else
 										</thead>
 
 										<tbody id="listaSalariosOK">
-											<?php echo $consultaSalarios ?>
+											<?php if(isset($consultaSalarios)) echo $consultaSalarios; ?>
 										</tbody>
 
 									</table>

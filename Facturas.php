@@ -4,52 +4,19 @@ require_once ('session.php');
 // Omitir errores
 ini_set("display_errors", false);
 
-// Incluimos nustro script php de funciones y conexión a la base de datos
-include('Includes/mainConexion.php');
+include('Includes/mainFunctions.incContri.php');
+
+if($errorDbConexion == false){
+	//$consultaFactura = reporteContri($mysqli);
+	$listContri = listaContri($mysqli);
+}else{
+	// Regresa error en la base de datos
+	$consultaFactura = '<option value="">ERROR AL CONECTAR CON LA BASE DE DATOS</option>';
+}
 
 if(isset($_REQUEST['request'])){
-	if($_REQUEST['request']=='cartera'){
-		$consultaCartera="SELECT `id_contribuyente`,`nomb_contribuyente`,`categ_contribuyente`,`dir_contribuyente`,`ciud_contribuyente` FROM `tbl_contribuyente` WHERE `id_user` > 0";
-		$result=mysql_query($consultaCartera);
-		$errorDbConexion == false;
+	if($_REQUEST['request']=='factura'){
 
-		if($errorDbConexion == false){
-			//if($row=mysql_fetch_assoc($result)){
-				// Manda a llamar la función para mostrar la lista de Contribuyentes ya paginados
-				$consultaCartera = '<tr>
-												<td style="text-align: center;">21548754</td>
-												<td style="text-align: center;">2013-1</td>
-												<td style="text-align: center;">09/03/2013</td>
-												<td style="text-align: center;">1140820188</td>
-												<td style="text-align: center;">Jonathan Olier Miranda</td>
-												<td style="text-align: center;">$4.000.000</td>
-												<td style="text-align: center;">$500.000</td>
-												<td style="text-align: center;">$500.000</td>
-												<td style="text-align: center;"><input placeholder="Abono" type="text" name="abono" id="abono" /></td>
-												<td style="text-align:center;"><a class="btn btn-danger btn-mini" onclick="Confirmar('.$listadoOK['id_user'].');"><i class="icon-trash icon-white"></i></a></td>
-											<tr>';
-			//}
-		}else{
-			// Regresa error en la base de datos
-			$consultaCartera = '
-				<tr id="sinDatos">
-					<td colspan="9" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-			   	</tr>
-			';
-		}
-	}elseif($_REQUEST['request']=='reporte'){
-		include('Includes/mainFunctions.incContri.php');
-
-		if($errorDbConexion == false){
-			$consultaFactura = reporteContri($mysqli);
-		}else{
-			// Regresa error en la base de datos
-			$consultaFactura = '
-				<tr id="sinDatos">
-					<td colspan="6" style="text-align: center;>ERROR AL CONECTAR CON LA BASE DE DATOS</td>
-			   	</tr>
-			';
-		}
 	}
 }
 ?>
@@ -159,10 +126,50 @@ if(isset($_REQUEST['request'])){
 
 				<div class="body_resize">
 
-					<div class="full">
+					<div class="full" style="text-align: center;">
 						<?php
 							if(!isset($_REQUEST['request'])){
-								echo '<img src="Imagenes/Guia.jpg" width="954" height="656" alt="Guia" />';
+						?>
+								<!-- <img src="Imagenes/Guia.jpg" width="954" height="656" alt="Guia" /> -->
+								<div id="facturacion" style="text-align:center;">
+									<table class="table table-striped table-bordered table-hover table-condensed">
+										<tr>
+											<td><strong>Nota:</strong> Tenga en cuenta que al generar la facturación de un periodo no podrá volver a ser generada nuevamente.</td>
+										</tr>
+										<tr>
+											<td><label>Usuario:</label>
+												<select name="Listacontri" id="Listacontri">
+													<option value="">Todos</option>
+													<?php if(isset($listContri)) echo $listContri; ?>
+												</select>
+											</td>
+										</tr>
+										<tr>
+											<td>Periodo a facturar:</td>
+										</tr>
+										<tr>
+											<td><input class="span2" type="text" name="" id="" placeholder="Año" value="<?php echo date("Y"); ?>" style="text-align: center;" /> <input class="span2" type="number" name="periodo" value="<?php echo date("n"); ?>" min="1" max="12"  style="text-align: center;"></td>
+										</tr>
+										<tr>
+											<td style="padding: 2em;">
+												<form id="reportes" action="Facturas.php" method="POST" class="span3">
+													<a id="submit2" class="btn btn-inverse">Generar Facturas</a>
+													<input  type="hidden" name="request" value="factura">
+												</form>
+
+												<form id="cartera" action="Cartera.php" method="POST" class="span3">
+													<a id="submit" class="btn btn-inverse">Cartera</a>
+
+													<!--
+													<input type="hidden" name="request" value="contribuyentes">
+													<input type="hidden" name="user" value="">
+													-->
+												</form>
+											</td>
+										</tr>
+									</table>
+								</div>
+							<?php
 							}else{
 								if($_REQUEST['request']=='cartera'){
 									echo '<div id="listaCartera">';
@@ -186,29 +193,17 @@ if(isset($_REQUEST['request'])){
 									echo '		</tbody>';
 									echo '	</table>';
 									echo '</div>';
-								}elseif($_REQUEST['request']=='reporte'){
+								}elseif($_REQUEST['request']=='factura'){
 									include('pdf/convertToPdf.php');
 									$var = doPDF($consultaFactura);
 
-									echo 'Para <strong>ver</strong> el reporte por favor haga click <a target="_blank" href="pdf/reportes/'.$var.'">aqui</a>.<br><br>';
-									echo 'Para <strong>descargar</strong> el reporte por favor haga click <a blank="_" href="pdf/download.php?f='.$var.'">aqui</a>.<br><br>';
-									echo '<script type="text/javascript">alert("El reporte se genero con exito.");</script>';
+									echo 'Para <strong>ver</strong> el factura por favor haga click <a target="_blank" href="pdf/reportes/'.$var.'">aqui</a>.<br><br>';
+									echo 'Para <strong>descargar</strong> el factura por favor haga click <a blank="_" href="pdf/download.php?f='.$var.'">aqui</a>.<br><br>';
+									echo '<script type="text/javascript">alert("La factura se genero con exito.");</script>';
 
 								}
 							}
 						?>
-
-						<form id="reportes" action="facturas.php" method="POST" class="span2">
-							<a id="submit2" class="btn btn-inverse">Generar Reporte</a>
-							<input  type="hidden" name="request" value="reporte">
-						</form>
-
-						<form id="cartera" action="Cartera.php" method="POST">
-							<a id="submit" class="btn btn-inverse">Cartera</a>
-
-							<input type="hidden" name="request" value="contribuyentes">
-							<input type="hidden" name="user" value="">
-						</form>
 						<div class="clr"></div>
 						<div class="clr"></div>
 

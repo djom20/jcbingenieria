@@ -2,13 +2,15 @@
 // Variable que indica el status de la conexión a la base de datos
 $errorDbConexion = false;
 
+include('mainConexion.php');
+
 // Función para extraer el listado de usurios
-function consultaSalario($linkDB){
+function consultaFacturaCliente($contri='', $linkDB=''){
 
 	$salida = '';
 
-	$consulta = $linkDB -> query("SELECT año_sal,valor_sal
-								  FROM tbl_salario ORDER BY año_sal ASC");
+	$consulta = $linkDB -> query("SELECT id_USUARIO_MYSQL,nomb_categoria,sal_categoria
+								  FROM tbl_categorias ORDER BY nomb_categoria ASC");
 
 	if($consulta -> num_rows != 0){
 
@@ -17,9 +19,9 @@ function consultaSalario($linkDB){
 		{
 			$salida .= '
 				<tr>
-					<td style="text-align:center;">'.$listadoOK['año_sal'].'</td>
-					<td style="text-align:center;">'.$listadoOK['valor_sal'].'</td>
-					<td style="text-align:center;"><a class="btn btn-mini" href="">Editar</a></td>
+					<td>'.$listadoOK['nomb_categoria'].'</td>
+					<td>'.$listadoOK['sal_categoria'].'</td>
+					<td style="text-align:center;"><a class="btn btn-mini" href="'.$listadoOK['id_USUARIO_MYSQL'].'">Editar</a></td>
 					<td style="text-align:center;"><a class="btn btn-danger btn-mini">Eliminar</a></td>
 				<tr>
 			';
@@ -37,4 +39,3 @@ function consultaSalario($linkDB){
 	return $salida;
 }
 
-include('mainConexion.php');

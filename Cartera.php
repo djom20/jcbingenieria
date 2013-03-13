@@ -3,6 +3,23 @@ require_once ('session.php');
 
 // Omitir errores
 ini_set("display_errors", false);
+
+if(isset($_REQUEST['request'])){
+	if($_REQUEST['request']=='busqueda'){
+		if(isset($_REQUEST['identificacion'])){
+			include('Includes/mainFunctions.incCarter.php');
+
+			if($errorDbConexion == false){
+				$listCart = consultaCartera($mysqli,$_REQUEST['identificacion']);
+			}else{
+				// Regresa error en la base de datos
+				$listCart = '<tr id="sinDatos">
+								<td colspan="11" style="text-align: center;">ERROR AL CONECTAR CON LA BASE DE DATOS</td>
+				   			</tr>';
+			}
+		}
+	}
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -98,11 +115,19 @@ ini_set("display_errors", false);
 				<div class="body_resize">
 
 					<div class="full">
+						<div class="well">
+							<?php
+								if(!isset($_REQUEST['request'])){
+							?>
+							<form id="formcartera" action="Cartera.php" method="POST">
+								<input placeholder="Cedula/Nit" type="text" name="identificacion"/>
+								<input type="hidden" name="request" value="busqueda" />
+								<button type="submit" class="btn btn-inverse" style="margin-bottom: 0.9em;">Constultar</button>
+							</form>
+							<?php } ?>
 						<?php
-							if(!isset($_REQUEST['request'])){
-								echo '<img src="Imagenes/Guia.jpg" width="954" height="656" alt="Guia" />';
-							}else{
-								if($_REQUEST['request']=='contribuyentes'){
+							if(isset($_REQUEST['request'])){
+								if($_REQUEST['request']=='busqueda'){
 									echo '<div id="listaCartera">';
 									echo '	<table id="listaCarteraM" class="table table-striped table-bordered table-hover table-condensed">';
 									echo '		<thead>';
@@ -121,11 +146,13 @@ ini_set("display_errors", false);
 									echo '		</thead>';
 
 									echo '		<tbody id="listaCategoriasOK">';
-									//echo $consultaCartera;
+									echo $listCart;
 									echo '		</tbody>';
 
 									echo '	</table>';
 									echo '</div>';
+									echo '<a class="btn btn-inverse" href="Cartera.php"><i class="icon-search icon-white"></i> Buscar</a>';
+
 								}elseif($_REQUEST['request']=='users'){
 									echo '<div id="listaCartera">';
 									echo '	<table id="listaCarteraM" class="table table-striped table-bordered table-hover table-condensed">';
@@ -147,6 +174,9 @@ ini_set("display_errors", false);
 								}
 							}
 						?>
+							<a class="btn btn-inverse" href="Facturas.php">Facturas</a>
+							<a class="btn btn-inverse" href="Cartera.php">Abonar a facturas</a>
+						</div>
 						<div class="clr"></div>
 						<div class="clr"></div>
 

@@ -33,6 +33,7 @@ class Buscador {
 			print 'NO EXISTE O NO SE ENCONTRO NINGUN RESULTADO';
 
 			} else {
+				$id='';
 				print '<table class="table table-striped table-bordered table-hover table-condensed">
 							<thead>
 								<tr>
@@ -49,6 +50,7 @@ class Buscador {
 				print '</tr>
 							</thead>';
 				while ($row = mysql_fetch_assoc($query)) {
+					$id=$row['id_contribuyente'];
 					print '<tbody>
 								<tr>
 									<td>'.$row['id_contribuyente'].'</td>
@@ -75,6 +77,10 @@ class Buscador {
 							</tbody>';
 				}
 				print '</table>';
+				print '<form action="">';
+				print '<button class="btn btn-inverse" >Cartera Recaudada</button>';
+				print '<input type="hidden" name="cartera" value="'.$id.'" />';
+				print '</form>';
 			}
 		}
 

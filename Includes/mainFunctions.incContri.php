@@ -46,7 +46,29 @@ function consultaContri($linkDB){
 	return $salida;
 }
 
+function listaContri($linkDB){
 
+	$salida = '';
+
+	$consulta = $linkDB -> query("SELECT id_contribuyente, nomb_contribuyente FROM tbl_contribuyente ORDER BY nomb_contribuyente ASC");
+
+	if($consulta -> num_rows != 0){
+
+		//Convertimos la información obtenida de la consulta
+		while($listadoOK = $consulta -> fetch_assoc())
+		{
+			$salida .= '<option value="'.$listadoOK['id_contribuyente'].'">'.$listadoOK['nomb_contribuyente'].'</option>';
+		}
+
+	}
+	else{
+		$salida = '<option value="">NO HAY REGISTROS EN LA BASE DE DATOS</option>';
+	}
+
+	return $salida;
+}
+
+/*
 function reporteContri($linkDB){
 
 	$salida = '';
@@ -105,7 +127,7 @@ function reporteContri($linkDB){
 
 	return $salida;
 }
-
+*/
 // Función para extraer el listado de Contribuyentes con limites
 function consultaContri_limit($linkDB, $primer_registro, $limit){
 

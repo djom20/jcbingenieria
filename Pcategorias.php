@@ -139,7 +139,7 @@ else
 					</div>
 
 				</div>
-              
+
 				<div class="clr"></div>
 
 			</div>
@@ -172,7 +172,10 @@ else
 										</thead>
 
 										<tbody id="listaCategoriasOK">
-											<?php echo $consultaCategorias ?>
+											<?php
+												if(isset($consultaCategorias))
+													echo $consultaCategorias;
+											?>
 										</tbody>
 
 									</table>

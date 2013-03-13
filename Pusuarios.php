@@ -83,8 +83,21 @@ else
 				<span></span>
 				<select id="usr_tipo" name="usr_tipo" class="{required:true} span3">
 					<option value="">Seleccione Una Opción</option>
-					<option value="Administrador">Administrador</option>
-					<option value="Usuario">Usuario</option>
+					<?php
+						if(isset($_SESSION["usr_tipo"])){
+							switch ($_SESSION["usr_tipo"]) {
+								case 'Usuario':
+									echo '<option value="Usuario">Usuario</option>';
+									break;
+								case 'Administrador':
+									echo '<option value="Usuario">Usuario</option>';
+									break;
+								case 'SuperAdministrador':
+									echo '<option value="Administrador">Administrador</option><option value="Usuario">Usuario</option>';
+									break;
+							}
+						}
+					?>
 				</select>
 
 				<p>Estado</p>
@@ -161,7 +174,7 @@ else
 					</div>
 
 				</div>
-              
+
 				<div class="clr"></div>
 
 			</div>
@@ -178,8 +191,13 @@ else
 							<section id="content">
 
 								<div id="btnAddUser" class="center addUser">
-
-									<button id="goNuevoUser" class="btn btn-inverse btn-small"><i class="icon-plus"></i> Agregar Usuario</button>
+									<?php
+										if(isset($_SESSION["usr_tipo"])){
+											if($_SESSION["usr_tipo"] != "Usuario"){
+												echo '<button id="goNuevoUser" class="btn btn-inverse btn-small"><i class="icon-plus"></i> Agregar Usuario</button>';
+											}
+										}
+									?>
 								</div>
 
 								<!--Titulos de la tabla-->
@@ -189,12 +207,18 @@ else
 											<tr>
 												<th style="text-align:center;">Identificaci&oacute;n</th>
 												<th style="text-align:center;">Nombre</th>
-												<th style="text-align:center;">Contrase&ntilde;a</th>
+												<?php
+													if(isset($_SESSION["usr_tipo"])){
+														if($_SESSION["usr_tipo"] != "Usuario"){
+															echo '<th style="text-align:center;">Contrase&ntilde;a</th>';
+														}
+													}
+												?>
 												<th style="text-align:center;">Tipo de usuario</th>
 												<th style="text-align:center;">Estado</th>
 												<?php
 													if(isset($_SESSION["usr_tipo"])){
-														if($_SESSION["usr_tipo"]=="Administrador" || $_SESSION["usr_tipo"]=="SuperAdministrador"){
+														if($_SESSION["usr_tipo"] != "Usuario"){
 															echo '<th colspan="2" style="text-align:center;">Acciones</th>';
 														}
 													}
